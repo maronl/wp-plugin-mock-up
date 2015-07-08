@@ -49,6 +49,14 @@ class PLUGIN_CLASS_NAME_BASE_Manager {
     protected $version;
 
     /**
+     * Store the options set for the plugin (if there are) to be used as context in the admin e public side.
+     *
+     * @access protected
+     * @var string $options The current options set for the plugin.
+     */
+    protected $options;
+
+    /**
      * Instantiates the plugin by setting up the core properties and loading
      * all necessary dependencies and defining the hooks.
      *
@@ -62,14 +70,14 @@ class PLUGIN_CLASS_NAME_BASE_Manager {
 
         $this->plugin_slug = 'PLUGIN_GIT_REP_NAME';
         $this->version = '1.0.0';
+        $this->options = array();
 
         $this->load_dependencies();
+        $this->define_register_activation_hook();
         $this->define_admin_hooks();
         $this->define_public_hooks();
 
     }
-
-
 
     /**
      * Imports the Classes needed to make the plugin working.
@@ -87,9 +95,13 @@ class PLUGIN_CLASS_NAME_BASE_Manager {
      * @access private
      */
     private function load_dependencies() {
+
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-PLUGIN_GIT_REP_NAME-config.php';
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-PLUGIN_GIT_REP_NAME-model.php';
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-PLUGIN_GIT_REP_NAME-manager-admin.php';
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-PLUGIN_GIT_REP_NAME-manager-options.php';
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-PLUGIN_GIT_REP_NAME-manager-public.php';
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-PLUGIN_GIT_REP_NAME-theme-functions.php';
 
         require_once plugin_dir_path( __FILE__ ) . 'class-PLUGIN_GIT_REP_NAME-loader.php';
         $this->loader = new PLUGIN_CLASS_NAME_BASE_Loader();
@@ -134,8 +146,25 @@ class PLUGIN_CLASS_NAME_BASE_Manager {
      */
     private function define_public_hooks() {
 
-//        $public = new Single_Post_Meta_Manager_Public( $this->get_version() );
-//        $this->loader->add_action( 'the_content', $public, 'display_post_meta_data' );
+        /*
+        $public = new Single_Post_Meta_Manager_Public( $this->get_version() );
+        $this->loader->add_action( 'the_content', $public, 'display_post_meta_data' );
+        */
+
+    }
+
+    /**
+     * Defines the hooks and callback functions that are used during plugin activation
+     *
+     * @access private
+     */
+    private function define_register_activation_hook() {
+
+        /*
+        $data_model = Content_Per_User_Model::getInstance();
+        $admin = new Content_Per_User_Manager_Admin( $this->version, $this->options, $data_model);
+        register_activation_hook( dirname( dirname( __FILE__ ) ) . '\content-per-user.php' , array( $admin, 'install_db_structure' ) );
+        */
 
     }
 
